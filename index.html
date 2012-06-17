@@ -1,0 +1,65 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="zh-CN" class="ie6" > <![endif]-->
+<!--[if IE 7 ]>    <html lang="zh-CN" class="ie7" > <![endif]-->
+<!--[if IE 8 ]>    <html lang="zh-CN" class="ie8" > <![endif]-->
+<!--[if IE 9 ]>    <html lang="zh-CN" class="ie9" > <![endif]-->
+<!--[if (gt IE 9)|!(IE)]>-->
+<html lang="zh-CN" class="not-ie">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+<title>Demo</title>
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<script data-main="script/main" src="script/RequireJS/require.js"></script>
+<!--[if lt IE 9]>
+<script src="script/html5.js"></script>
+<![endif]-->
+<script>
+require(['main'], function(){
+	/* $(function() {
+		var iframeObj = window.frames["pageIframe"];
+		$('#'+iframeObj.name).css({height:iframeObj.document.body.scrollHeight});
+	}) */
+})
+</script>
+</head>
+
+<body>
+<header>
+	<div class="useragent-alert">
+		<p>YOO WEB DESKTOP</p>
+		<div class="link">
+			<span class="note">
+				* <a href="http://www.google.cn/chrome/intl/zh-CN/landing_chrome.html" target="_blank">Chrome</a>!
+				2 亿活跃用户，全球成长最快，来自 Google 的新型浏览器。
+			</span>
+			// 
+			<a href="http://www.beautyoftheweb.com" target="_blank">
+				Internet Explorer 10
+			</a>
+		</div>
+		<div class="btn-group pageType" data-toggle="buttons-radio">
+			<a class="btn btn-mini btn-inverse" href="#dialog">dialog</a>
+			<a class="btn btn-mini btn-inverse" href="#page">page</a>
+		</div>
+	</div>
+</header>
+
+<nav>
+	<div class="work-canvas-sorter">
+		<ul>
+			<li><a class="work-canvas-sorter-button pseudo-selected" href="#user">User</a></li>
+			<li><a class="work-canvas-sorter-button" href="#admin">Admin</a></li>
+			<li><a class="work-canvas-sorter-button pseudo-disabled" href="#widget">Widget</a></li>
+		</ul>
+	</div>
+</nav>
+
+<section id="container">
+	<div id="pageIframe"></div>
+</section>
+<!-- &copy 2012 @Yohann_Yuen -->
+</body>
+</html>

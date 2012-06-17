@@ -1,0 +1,27 @@
+<style>
+body{margin:0;padding:0;font-size:14px;}
+</style>
+<script>
+function frameStyleResize(targObj) {
+	var iframeObj = targObj.parent.document.getElementById(targObj.name);
+	try {
+		var bodyHeight = targObj.document.body.scrollHeight;
+		if (bodyHeight < 600)
+			bodyHeight = 600
+		iframeObj.style.height = bodyHeight + 'px';
+	} catch(e) {
+		//
+	}
+}
+
+window.onload = function(){
+	frameStyleResize(self);
+}
+
+</script>
+<body>
+	<div style="height: 9000px;background: #ddd;">
+		<div style="padding:1em;">设置自适应iframe页面高度，滚动条转使用全页面滚动条测试</div>
+	</div>
+	<p>enen</p>
+</body>

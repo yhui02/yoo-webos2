@@ -1,0 +1,46 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="zh-CN" class="ie6" > <![endif]-->
+<!--[if IE 7 ]>    <html lang="zh-CN" class="ie7" > <![endif]-->
+<!--[if IE 8 ]>    <html lang="zh-CN" class="ie8" > <![endif]-->
+<!--[if IE 9 ]>    <html lang="zh-CN" class="ie9" > <![endif]-->
+<!--[if (gt IE 9)|!(IE)]>--> <html lang="zh-CN" class="not-ie"> <!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+<title>Demo</title>
+<!-- <link rel="stylesheet" href="styles.css" /> -->
+<script data-main="YoJS/main" src="YoJS/RequireJS/require.js"></script>
+<!--[if lt IE 9]>
+<script src="YoJS/html5.js"></script>
+<![endif]-->
+
+<script>
+//显示存储事件的相关内容
+function handleStorageEvent(e) {
+	var _logStr = 'key:' + e.key + '\noldValue:' + e.oldValue + '\nnewValue:' + e.newValue;
+	$('#log').html(_logStr)
+	console.log(_logStr); 
+} 
+// 添加存储事件监听
+window.addEventListener('storage', handleStorageEvent, false);
+
+var i = 0;
+function test() {
+	i++;
+	window.localStorage.setItem('k1', 'vvvvvv' + i);
+	console.log(window.localStorage.getItem('k1'));
+}
+
+function test2() {
+	console.log(window.localStorage.getItem('k1'));
+}
+</script>
+</head>
+<body>
+	<div>
+		<a href="javascript:test()">设置</a>
+		<a href="javascript:test2()">显示</a>
+	</div>
+	
+	<div id="log"></div>
+</body>
+</html>
