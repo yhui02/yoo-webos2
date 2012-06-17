@@ -59,7 +59,7 @@ define(function(require, exports, module) {
 	var iconJson = [{
 		id: 'a1',
 		name: '测试1',
-		url: 'http://www.21tb.com'
+		url: 'http://www.baidu.com/'
 	},{
 		id: 'a2',
 		name: '测试2',
@@ -85,10 +85,12 @@ define(function(require, exports, module) {
 		name: '测试7',
 		url: 'html/test.html'
 	}];
-	$('.pageType a').click(function(){
-		alert('刷新页面试试。');
-	})
+	
 	var _hash = document.location.hash;
+	$('.pageType a').each(function(i, n) {
+		if ($(n).attr('href').indexOf(_hash) != -1)
+			$(n).addClass('active');
+	});
 	if (_hash.indexOf('dialog') != -1)
 		desktop.desktopDialog(iconJson);
 	else
