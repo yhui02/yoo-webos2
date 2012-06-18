@@ -34,39 +34,40 @@ define(function(require, exports, module) {
 		}
 		
 		var _T = require('tools');
-		_T.loadCss('jquery-ui/css/smoothness/jquery-ui-1.8.21.custom.css');
-		require([ 'order!jquery', 'order!script/jquery-ui/js/jquery-ui-1.8.21.custom.min.js' ]);
+		_T.loadCss('library/jquery-ui/css/smoothness/jquery-ui-1.8.21.custom.css');
+		require([ 'order!jquery', 'order!script/library/jquery-ui/js/jquery-ui-1.8.21.custom.min.js' ]);
 		
-		// icons elements
-		var _iconsHtmlEle = [];
-		$.each(data, function(i, n) {
-			_iconsHtmlEle.push('<div class="span1 dd">');
-			_iconsHtmlEle.push('  <a id="' + n.id + '" class="dialogBtn btn btn-inverse" href="' + n.url + '">');
-			_iconsHtmlEle.push('  <i class="icon-folder-close icon-white"></i><br />' + n.name + '</a>');
-			_iconsHtmlEle.push('</div>');
-		})
-		_iconsHtmlEle = $(_iconsHtmlEle.join(''));
-		
-		// dilaog elements
-		var _dialogHtmlEle = [];
-		var _dialogIdExt = 'Dialog';
-		$.each(data, function(i, n) {
-			var _id = n.id + _dialogIdExt;
-			_dialogHtmlEle.push('<div id="' + _id + '" class="yooDialog dialogLoading" title="' + n.name + '">');
-			_dialogHtmlEle.push('</div>');
-		})
-		_dialogHtmlEle = $(_dialogHtmlEle.join(''))
-		
-		// dialog register
 		$(function() {
+			// icons elements
+			var _iconsHtmlEle = [];
+			$.each(data, function(i, n) {
+				_iconsHtmlEle.push('<div class="span1 dd">');
+				_iconsHtmlEle.push('  <a id="' + n.id + '" class="dialogBtn btn btn-inverse" href="' + n.url + '" rel="tooltip" title="' + n.title + '">');
+				_iconsHtmlEle.push('  <i class="icon-folder-close icon-white"></i><br />' + n.name + '</a>');
+				_iconsHtmlEle.push('</div>');
+			})
+			_iconsHtmlEle = $(_iconsHtmlEle.join(''));
 			iconsConObj.append(_iconsHtmlEle);
+			require(['bootstrap-tooltip'], function(){
+				iconsConObj.find('a').tooltip({'placement':'right'});
+			});
+			
+			// dilaog elements register
+			var _dialogHtmlEle = [];
+			var _dialogIdExt = 'Dialog';
+			$.each(data, function(i, n) {
+				var _id = n.id + _dialogIdExt;
+				_dialogHtmlEle.push('<div id="' + _id + '" class="yooDialog dialogLoading" title="' + n.name + '">');
+				_dialogHtmlEle.push('</div>');
+			})
+			_dialogHtmlEle = $(_dialogHtmlEle.join(''))
 			$('body').append(_dialogHtmlEle);
+			
 			
 			var getHtmlHeightForDial = function() {
 				var _height = $('html').height() - 40;
 				return _height > 2000 ? 2000 : _height;
 			};
-			
 			var getHtmlWidthForDial = function() {
 				var _width = $('html').width();
 				return _width > 860 ? 860 : _width;

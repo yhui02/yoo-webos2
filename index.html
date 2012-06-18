@@ -12,9 +12,9 @@
 
 <link href="css/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css" />
-<script data-main="script/main" src="script/RequireJS/require.js"></script>
+<script data-main="script/main" src="script/require.min.js"></script>
 <!--[if lt IE 9]>
-<script src="script/html5.js"></script>
+<script src="script/library/html5.js"></script>
 <![endif]-->
 <script>
 require(['main'], function(){
@@ -41,8 +41,8 @@ require(['main'], function(){
 			</a>
 		</div>
 		<div class="btn-group pageType" data-toggle="buttons-radio">
-			<a class="btn btn-mini btn-inverse" href="?t=type1#dialog">dialog</a>
-			<a class="btn btn-mini btn-inverse" href="?t=type2#page">page</a>
+			<a class="btn btn-mini btn-inverse" href="?dialog#dialog" rel="tooltip" title="窗口模式，适合Mac/PC大屏幕计算机">dialog</a>
+			<a class="btn btn-mini btn-inverse" href="?page#page" rel="tooltip" title="页面模式，适合小屏幕或移动终端">page</a>
 		</div>
 	</div>
 </header>

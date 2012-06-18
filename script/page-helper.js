@@ -22,6 +22,12 @@ define(function(require, exports, module) {
 			o.login.apply();
 		}
 		
+		o._loadPage = function(eleObj, url) {
+			eleObj.load(url, {_t: new Date().getTime()}, function(d) {
+				//
+			});
+		};
+		
 		return o;
 	})(exports);
 	
