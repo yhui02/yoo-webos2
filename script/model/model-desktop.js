@@ -191,9 +191,8 @@ define(function(require, exports, module) {
 				var _src = $(this).attr('href');
 				var _iframHtml = '<iframe id="pageIframe" name="pageIframe" border="0" class="dialogLoading"'
 					+ 'frameborder="0" src="' + _src + '"></iframe>';
-				$('#pageIframe').html(_iframHtml);
+				$('#pageIframe').html(_iframHtml).height('100%');
 				
-				$('#pageIframe').height('100%');
 				$(this).css({
 					color : '#999'
 				}).find('i').addClass('icon-folder-open');

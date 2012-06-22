@@ -111,6 +111,15 @@ define(function(require, exports, module) {
 	require(['bootstrap-tooltip'], function(){
 		$('.pageType a').tooltip({'placement':'bottom'});
 	});
+
+	require(['order!jquery', 'order!library/bootstrap-validation'], function(){
+		$('#testForm').validation().submit(function() {
+			if($(this).data('isValid') !== true)
+				return false;
+			alert($(this).serialize());
+			return false;
+		});
+	})
 	
 	///test
 	console.log(T);
