@@ -2,7 +2,6 @@
  * @author Yohann
  */
 define(function(require, exports, module) {
-
 	/*
 	 * css loader
 	 */
@@ -19,7 +18,7 @@ define(function(require, exports, module) {
 	    link.rel = 'stylesheet';
 	    link.href = url;
 	    document.getElementsByTagName('head')[0].appendChild(link);
-	}
+	};
 
 	/*
 	 * 字符长度（中文按两个字符计算）
@@ -37,7 +36,7 @@ define(function(require, exports, module) {
 			}
 		}
 		return str_length;
-	}
+	};
 
 	/*
 	 * 字符长度（非中文2个当一个）
@@ -50,16 +49,16 @@ define(function(require, exports, module) {
 				width++;
 		}
 		return Math.ceil(width / 2);
-	}
+	};
 
 	// 当前年月日（字符串）
 	exports.getDate = function() {
 		var _f = function(v) {
 			return v < 10 ? '0' + v : v;
-		}
+		};
 		var _date = new Date();
 		return _date.getFullYear() + '-' + _f((_date.getMonth() + 1)) + '-' + _f(_date.getDate());
-	}
+	};
 
 	/*
 	 * 返回js日期
@@ -67,7 +66,7 @@ define(function(require, exports, module) {
 	exports.dateFormat = function(dateStr) {
 		dateStr = dateStr.replace(/-/g, '/');
 		return new Date(dateStr);
-	}
+	};
 	
 	/*
 	 * 执行OBJ对所有方法
@@ -78,7 +77,7 @@ define(function(require, exports, module) {
 				obj[i].apply();
 			}
 		}
-	}
+	};
 	
 	/*
 	 * OBJ合并
@@ -95,5 +94,5 @@ define(function(require, exports, module) {
 			}
 		} 
 		return des;
-	}
+	};
 });

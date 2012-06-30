@@ -37,8 +37,8 @@ define(['jquery-history'], function() {
 					title = $(this).attr('data-title'),
 					data = {fns:function(){},p:'v1,v2',id:$(this).attr('data-eid')};
 				return obj.loadPage(data, title, url);
-			})
-		})
+			});
+		});
 	};
 	
 	return obj;

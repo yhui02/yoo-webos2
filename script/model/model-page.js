@@ -8,19 +8,19 @@ define(function(require, exports, module) {
 	var T = (function(o) {
 		o.alert = function() {
 			//
-		}
+		};
 		
 		o.confirm = function() {
 			//
-		}
+		};
 		
 		o.login = function() {
 			console.log('login');
-		}
+		};
 		
 		o.error = function() {
 			o.login.apply();
-		}
+		};
 		
 		o._loadPage = function(eleObj, url) {
 			eleObj.load(url, {_t: new Date().getTime()}, function(d) {

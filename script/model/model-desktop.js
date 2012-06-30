@@ -12,7 +12,7 @@ define(function(require, exports, module) {
 	var _init = function() {
 		var setContainerHeight = function() {
 			containerObj.height(document.body.offsetHeight - $('header').height() - 4);
-		}
+		};
 		window.onresize = setContainerHeight;
 		
 		$(function() {
@@ -21,8 +21,8 @@ define(function(require, exports, module) {
 			var iconsConEle = $('<div id="iconsCon"></div>');
 			containerObj.append(iconsConEle);
 			iconsConObj = $('#iconsCon');
-		})
-	}
+		});
+	};
 	
 	/*
 	 * desktopDialog build
@@ -42,10 +42,11 @@ define(function(require, exports, module) {
 			var _iconsHtmlEle = [];
 			$.each(data, function(i, n) {
 				_iconsHtmlEle.push('<div class="span1 dd">');
-				_iconsHtmlEle.push('  <a id="' + n.id + '" class="dialogBtn btn btn-inverse" href="' + n.url + '" rel="tooltip" title="' + n.title + '">');
+				_iconsHtmlEle.push('  <a id="' + n.id + '" class="dialogBtn btn btn-inverse" href="' + n.url 
+						+ '" rel="tooltip" title="' + n.title + '" data-type="' + n.type + '">');
 				_iconsHtmlEle.push('  <i class="icon-folder-close icon-white"></i><br />' + n.name + '</a>');
 				_iconsHtmlEle.push('</div>');
-			})
+			});
 			_iconsHtmlEle = $(_iconsHtmlEle.join(''));
 			iconsConObj.append(_iconsHtmlEle);
 			require(['bootstrap-tooltip'], function(){
@@ -59,8 +60,8 @@ define(function(require, exports, module) {
 				var _id = n.id + _dialogIdExt;
 				_dialogHtmlEle.push('<div id="' + _id + '" class="yooDialog dialogLoading" title="' + n.name + '">');
 				_dialogHtmlEle.push('</div>');
-			})
-			_dialogHtmlEle = $(_dialogHtmlEle.join(''))
+			});
+			_dialogHtmlEle = $(_dialogHtmlEle.join(''));
 			$('body').append(_dialogHtmlEle);
 			
 			
@@ -108,25 +109,31 @@ define(function(require, exports, module) {
 					close : function() {
 						//_dialogObj.dialog('destroy');
 					}
-				})
-			})
+				});
+			});
 			
 			// 绑定 icon 点击事件
 			$('.dialogBtn').click(function() {
 				var _oId = $(this).attr('id');
 				var _dialogObj = $('#' + _oId + _dialogIdExt);
 				var _src = $(this).attr('href');
+				var _type = $(this).attr('data-type');
+				
 				if (_dialogObj.dialog('isOpen')) 
 					_dialogObj.dialog('moveToTop');
-				else
-					_dialogObj.dialog('open').html('<iframe border="0" frameborder="0" src="' + _src + '"></iframe>');
+				else {
+					if (_type == 'html')
+						_dialogObj.dialog('open').load(_src);
+					else
+						_dialogObj.dialog('open').html('<iframe border="0" frameborder="0" src="' + _src + '"></iframe>');
+				}
 				
 				$(this).css({
 					color : '#999'
 				}).find('i').addClass('icon-folder-open');
 				
 				return false;
-			})
+			});
 			
 			/*
 			 * dialog 追加事件
@@ -153,7 +160,7 @@ define(function(require, exports, module) {
 				}
 				_thisDialogObj.dialog('option', 'position', [_t, _l]);
 				_thisDialogObj.dialog({width: _w, height: _h});
-			})
+			});
 			
 			var _dialogResize = function() {
 				if ($.browser.msie && $.browser.msie.version <= 6) {
@@ -162,10 +169,10 @@ define(function(require, exports, module) {
 					//$('.yooDialog').dialog({height: getHtmlHeightForDial(), width: getHtmlWidthForDial()});
 					$('.yooDialog').dialog({height: getHtmlHeightForDial()});
 				}
-			}
+			};
 			
 			window.onresize = _dialogResize;
-		})
+		});
 	}
 	
 	/*
@@ -178,21 +185,26 @@ define(function(require, exports, module) {
 		var _iconsHtmlEle = [];
 		$.each(data, function(i, n) {
 			_iconsHtmlEle.push('<div class="span1 dp">');
-			_iconsHtmlEle.push('  <a id="' + n.id + '" class="dialogBtn" href="' + n.url + '">');
+			_iconsHtmlEle.push('  <a id="' + n.id + '" class="dialogBtn" href="' + n.url + '" data-type="' + n.type + '">');
 			_iconsHtmlEle.push('  <i class="icon-folder-close"></i>' + n.name + '</a>');
 			_iconsHtmlEle.push('</div>');
-		})
+		});
 		_iconsHtmlEle = $(_iconsHtmlEle.join(''));
 		$(function() {
 			iconsConObj.append(_iconsHtmlEle);
 			
 			// 绑定 icon 点击事件
 			$('.dialogBtn').click(function() {
+				var _containerObj = $('#pageIframe');
 				var _src = $(this).attr('href');
-				var _iframHtml = '<iframe id="pageIframe" name="pageIframe" border="0" class="dialogLoading"'
-					+ 'frameborder="0" src="' + _src + '"></iframe>';
-				$('#pageIframe').html(_iframHtml).height('100%');
-				
+				var _type = $(this).attr('data-type');
+				if (_type == 'html') {
+					_containerObj.load(_src).height('100%');
+				} else {
+					var _iframHtml = '<iframe id="pageIframeCon" name="pageIframeCon" border="0" class="dialogLoading"'
+						+ 'frameborder="0" src="' + _src + '"></iframe>';
+					_containerObj.html(_iframHtml).height('100%');
+				}
 				$(this).css({
 					color : '#999'
 				}).find('i').addClass('icon-folder-open');
@@ -201,7 +213,7 @@ define(function(require, exports, module) {
 				}).find('i').removeClass('icon-folder-open');
 				
 				return false;
-			})
-		})
-	}
+			});
+		});
+	};
 });
