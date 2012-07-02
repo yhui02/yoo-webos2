@@ -67,3 +67,8 @@ iframe {
 .ui-dialog-titlebar{border-radius: 0 !important;border:none !important;}
 .ui-dialog-buttonpane{background-color:#ddd;}
 .ui-dialog .ui-dialog-content{overflow:hidden!important;padding:0!important;}
+
+
+.ui-dialog-titlebar-open{position: absolute;right: 4em;top: .56em;}
+.ui-dialog-titlebar-min{position: absolute;right: 3em;top: .56em;}
+.ui-dialog-titlebar-max{position: absolute;right: 1.8em;top: .56em;}

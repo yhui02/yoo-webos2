@@ -28,6 +28,16 @@ define(function(require, exports, module) {
 			});
 		};
 		
+		o.scrollTo = function(ele) {
+			if (typeof ele == 'string') {
+				if (ele == 'body' || ele == 'html')
+					ele = $(ele);
+				else
+					ele = $('#'+ele);
+			}
+			window.scrollTo(ele.position().left, ele.position().top);
+		};
+		
 		return o;
 	})(exports);
 	

@@ -14,14 +14,17 @@ function frameStyleResize(targObj) {
 	}
 }
 
+function myScrollTo() {
+	window.scrollTo(0, 0)
+}
+
 window.onload = function(){
 	frameStyleResize(self);
 }
-
 </script>
 <body>
 	<div style="height: 9000px;background: #ddd;">
 		<div style="padding:1em;">设置自适应iframe页面高度，滚动条转使用全页面滚动条测试</div>
 	</div>
-	<p>enen</p>
+	<p>enen<a href="javascript:myScrollTo()">top</a></p>
 </body>

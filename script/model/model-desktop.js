@@ -9,12 +9,10 @@ define(function(require, exports, module) {
 	 */
 	var containerObj = $('#container');
 	var iconsConObj;
+	var setContainerHeight = function() {
+		containerObj.height(document.body.offsetHeight - $('header').height() - 4);
+	};
 	var _init = function() {
-		var setContainerHeight = function() {
-			containerObj.height(document.body.offsetHeight - $('header').height() - 4);
-		};
-		window.onresize = setContainerHeight;
-		
 		$(function() {
 			setContainerHeight.apply();
 			
@@ -47,8 +45,7 @@ define(function(require, exports, module) {
 				_iconsHtmlEle.push('  <i class="icon-folder-close icon-white"></i><br />' + n.name + '</a>');
 				_iconsHtmlEle.push('</div>');
 			});
-			_iconsHtmlEle = $(_iconsHtmlEle.join(''));
-			iconsConObj.append(_iconsHtmlEle);
+			iconsConObj.append(_iconsHtmlEle.join(''));
 			require(['bootstrap-tooltip'], function(){
 				iconsConObj.find('a').tooltip({'placement':'right'});
 			});
@@ -61,8 +58,7 @@ define(function(require, exports, module) {
 				_dialogHtmlEle.push('<div id="' + _id + '" class="yooDialog dialogLoading" title="' + n.name + '">');
 				_dialogHtmlEle.push('</div>');
 			});
-			_dialogHtmlEle = $(_dialogHtmlEle.join(''));
-			$('body').append(_dialogHtmlEle);
+			$('body').append(_dialogHtmlEle.join(''));
 			
 			
 			var getHtmlHeightForDial = function() {
@@ -71,7 +67,54 @@ define(function(require, exports, module) {
 			};
 			var getHtmlWidthForDial = function() {
 				var _width = $('html').width();
-				return _width > 860 ? 860 : _width;
+				return _width > 900 ? 900 : _width;
+			};
+			
+			/*
+			 * dialog事件
+			 */
+			var _dialog = {
+				// 最大化
+				max : function(dialogObj) {
+					var fw = $('html').width() - 2,
+						fh = $('html').height() -2,
+						ft = 0;
+						fl = 0;
+					var _w = 0, _h = 0, _t = 0, _l = 0;
+					if (fw == dialogObj.dialog('option', 'width') && fh == dialogObj.dialog('option', 'height')) {
+						_w = dialogOption[dialogObj[0].id].width;
+						_h = dialogOption[dialogObj[0].id].height;
+						_t = dialogOption[dialogObj[0].id].top;
+						_l = dialogOption[dialogObj[0].id].left;
+					} else {
+						_w = fw;
+						_h = fh;
+						_t = ft;
+						_l = fl;
+					}
+					dialogObj.parent().css({top:_t, left:_l});
+					//dialogObj.dialog('option', 'position', [_t, _l]);
+					dialogObj.dialog({width: _w, height: _h});
+				},
+				
+				// 重设大小
+				resize : function() {
+					if ($.browser.msie && $.browser.msie.version <= 6) {
+						//
+					} else {
+						$('.yooDialog').dialog({height: getHtmlHeightForDial()});
+					}
+				},
+				
+				// 位置、大小信息
+				dialogOption : function(dialogObj) {
+					return {
+						width : dialogObj.dialog('option', 'width'),
+						height : dialogObj.dialog('option', 'height'),
+						top : dialogObj.parent().position().top,
+						left : dialogObj.parent().position().left
+					};
+				}
 			};
 			
 			// 初始化 dialog
@@ -93,6 +136,8 @@ define(function(require, exports, module) {
 						_dialogObj.css({
 							display : ''
 						}).parent().removeClass('dialogLoading');
+						
+						dialogOption[n.id + _dialogIdExt] = _dialog.dialogOption(_dialogObj);
 					},
 					resizeStart : function(event, ui) {
 						window.onresize = null;
@@ -101,31 +146,61 @@ define(function(require, exports, module) {
 						}).parent().addClass('dialogLoading');
 					},
 					resizeStop : function(event, ui) {
-						window.onresize = _dialogResize;
+						window.onresize = _dialog.resize;
 						_dialogObj.css({
 							display : ''
 						}).parent().removeClass('dialogLoading');
+						
+						dialogOption[n.id + _dialogIdExt] = _dialog.dialogOption(_dialogObj);
 					},
 					close : function() {
 						//_dialogObj.dialog('destroy');
+					},
+					create : function() {
+						var _this = $(this);
+						var _html = [];
+						_html.push('<a href="javascript:;" class="ui-dialog-titlebar-open ui-corner-all" role="button"><span class="ui-icon ui-icon-extlink">open</span></a>');
+						_html.push('<a href="javascript:;" class="ui-dialog-titlebar-min ui-corner-all" role="button"><span class="ui-icon ui-icon-minus">min</span></a>');
+						_html.push('<a href="javascript:;" class="ui-dialog-titlebar-max ui-corner-all" role="button"><span class="ui-icon ui-icon-newwin">max</span></a>');
+						_this.prev().find('.ui-dialog-title').after(_html.join(''));
+						_this.parent().find('.ui-dialog-titlebar-open').click(function() {
+							window.open($('#' + n.id)[0].href, '_blank');
+						});
+						_this.parent().find('.ui-dialog-titlebar-min').click(function() {
+							//_this.dialog('close');
+							_this.parent().hide();
+						});
+						_this.parent().find('.ui-dialog-titlebar-max').click(function() {
+							_dialog.max(_dialogObj);
+						});
+					},
+					open : function() {
+						window.dialogOption = {};
+						dialogOption[n.id + _dialogIdExt] = _dialog.dialogOption(_dialogObj);
+						return false;
 					}
 				});
 			});
 			
 			// 绑定 icon 点击事件
 			$('.dialogBtn').click(function() {
+				
 				var _oId = $(this).attr('id');
 				var _dialogObj = $('#' + _oId + _dialogIdExt);
 				var _src = $(this).attr('href');
 				var _type = $(this).attr('data-type');
 				
 				if (_dialogObj.dialog('isOpen')) 
-					_dialogObj.dialog('moveToTop');
+					_dialogObj.dialog('moveToTop').parent().show('fade');
 				else {
 					if (_type == 'html')
 						_dialogObj.dialog('open').load(_src);
 					else
 						_dialogObj.dialog('open').html('<iframe border="0" frameborder="0" src="' + _src + '"></iframe>');
+					
+					setTimeout(function() {
+						_dialogObj.removeClass('dialogLoading');
+					}, 1200);
 				}
 				
 				$(this).css({
@@ -140,40 +215,16 @@ define(function(require, exports, module) {
 			 */
 			// 标题双击最大化处理
 			$('.ui-dialog-titlebar').dblclick(function() {
-				var fw = $('html').width() - 2,
-					fh = $('html').height() -2,
-					ft = 0;
-					fl = 0;
 				var _thisDialogObj = $(this).next();
-				
-				var _w = 0, _h = 0, _t = 0, _l = 0;
-				if (fw == _thisDialogObj.dialog('option', 'width') && fh == _thisDialogObj.dialog('option', 'height')) {
-					_w = 720;
-					_h = 500;
-					_t = 32;
-					_l = 40;
-				} else {
-					_w = fw;
-					_h = fh;
-					_t = ft;
-					_l = fl;
-				}
-				_thisDialogObj.dialog('option', 'position', [_t, _l]);
-				_thisDialogObj.dialog({width: _w, height: _h});
+				_dialog.max(_thisDialogObj);
 			});
 			
-			var _dialogResize = function() {
-				if ($.browser.msie && $.browser.msie.version <= 6) {
-					//
-				} else {
-					//$('.yooDialog').dialog({height: getHtmlHeightForDial(), width: getHtmlWidthForDial()});
-					$('.yooDialog').dialog({height: getHtmlHeightForDial()});
-				}
+			window.onresize = function() {
+				setContainerHeight.apply();
+				_dialog.resize.apply();
 			};
-			
-			window.onresize = _dialogResize;
 		});
-	}
+	};
 	
 	/*
 	 * desktopPage build

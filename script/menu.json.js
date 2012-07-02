@@ -20,7 +20,7 @@ define(function () {
 		id: 'a4',
 		name: '测试4',
 		title: '测试4',
-		url: 'https://www.xobni.com/learnmore/group/',
+		url: 'http://www.zhihu.com/',
 		type: 'iframe'
 	},{
 		id: 'a5',
