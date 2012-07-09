@@ -1,3 +1,5 @@
+<script src="../script/library/jquery-1.7.2.min.js"></script>
+<script src="../script/require.min.js"></script>
 <style>
 body{margin:0;padding:0;font-size:14px;}
 </style>
@@ -14,17 +16,47 @@ function frameStyleResize(targObj) {
 	}
 }
 
-function myScrollTo() {
-	window.scrollTo(0, 0)
-}
-
 window.onload = function(){
 	frameStyleResize(self);
 }
+
+
+var jsonFlickrFeed = function(d) {
+	console.log(d);
+	var _html = [];
+	$.each(d.items, function(i, n) {
+		console.log(n)
+		_html.push('<div style="margin:1em;padding:0 1em;background-color:#eee;float:left;min-height:24em;";width:20em;>');
+		_html.push(n.description);
+		_html.push('</div>');
+	})
+	$('#flickr').html(_html.join('')).find('a').attr('target', '_blank');
+}
+function search(obj) {
+	var tags = obj.elements['key'].value;
+	require(['http://api.flickr.com/services/feeds/photos_public.gne?tags='+tags+'&lang=cn&format=json']);
+	return false;
+}
+function dialog(hash) {
+	parent.location.hash = '#' + hash;
+	return false;
+}
 </script>
 <body>
-	<div style="height: 9000px;background: #ddd;">
-		<div style="padding:1em;">设置自适应iframe页面高度，滚动条转使用全页面滚动条测试</div>
+	<div style="background: #ddd;">
+		<div style="padding:1em;">
+			<p>设置自适应iframe页面高度，滚动条转使用全页面滚动条测试</p>
+			<ul>
+				<li><a href="javascript:dialog('dialog/a1/true')">打开“测试1”</a></li>
+				<li><a href="javascript:parent.T.dialogOpen('a1', 'http://static.tieba.baidu.com/tb/zt/itieba/tuiguang.html', null, true)">打开“测试1”指定页1</a></li>
+				<li><a href="javascript:parent.T.dialogOpen('a1', 'http://mp3.baidu.com/')">打开“测试1”指定页2</a></li>
+			</ul>
+			<form onsubmit="return search(this);">
+				<input type="text" size="40" name="key" />
+				<input type="submit" />
+			</form>
+		</div>
 	</div>
-	<p>enen<a href="javascript:myScrollTo()">top</a></p>
+	<div id="flickr"></div>
+	<p style="clear:both;text-align:right;padding:.6em 1em;"><a href="javascript:window.scrollTo(0, 0)">top</a></p>
 </body>

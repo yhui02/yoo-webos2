@@ -19,7 +19,11 @@ define(function(require, exports, module) {
 	    link.href = url;
 	    document.getElementsByTagName('head')[0].appendChild(link);
 	};
-
+	
+	exports.setHash = function(hash) {
+		location.hash = '#' + hash;
+	};
+	
 	/*
 	 * 字符长度（中文按两个字符计算）
 	 */
@@ -50,8 +54,49 @@ define(function(require, exports, module) {
 		}
 		return Math.ceil(width / 2);
 	};
-
-	// 当前年月日（字符串）
+	
+	// 过滤 html 标签
+	exports.getTextContent = function(str) {
+		str = str.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+		str = str.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+		str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+		return str;
+	};
+	
+	/*
+	 * 转换特殊字符为HTML实体字符
+	 */
+	exports.htmlEscape = function(str) {
+		str = str.replace(/</g, '&lt');
+		str = str.replace(/>/g, '&gt');
+		return str;
+	};
+	
+	// dataArr中本次需新增的项
+	exports.dataArrModify = {
+		addOnly : function(dataArrOld, dataArrNew) {
+			var _resultArr = [];
+			$.each(dataArrNew, function(i, n) {
+				if ($.inArray(n, dataArrOld) == -1) {
+					_resultArr.push(n);
+				}
+			});
+			return _resultArr;
+		},
+		delOnly : function(dataArrOld, dataArrNew) {
+			var _resultArr = [];
+			$.each(dataArrOld, function(i, n) {
+				if ($.inArray(n, dataArrNew) == -1) {
+					_resultArr.push(n);
+				}
+			});
+			return _resultArr;
+		}
+	};
+	
+	/*
+	 * 当前年月日（字符串）
+	 */
 	exports.getDate = function() {
 		var _f = function(v) {
 			return v < 10 ? '0' + v : v;

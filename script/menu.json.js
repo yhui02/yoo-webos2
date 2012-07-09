@@ -15,7 +15,8 @@ define(function () {
 		id: 'a3',
 		name: '测试3',
 		title: '测试3',
-		url: 'http://www.virginamerica.com/search.do?cid=PRO_0321'
+		url: 'http://www.virginamerica.com/search.do?cid=PRO_0321',
+		type: 'iframe'
 	},{
 		id: 'a4',
 		name: '测试4',
