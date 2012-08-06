@@ -8,9 +8,9 @@
 <meta charset="utf-8" />
 <title>Demo</title>
 <!-- <link rel="stylesheet" href="styles.css" /> -->
-<script data-main="YoJS/main" src="YoJS/RequireJS/require.js"></script>
+<script data-main="script/main" src="script/require.min.js"></script>
 <!--[if lt IE 9]>
-<script src="YoJS/html5.js"></script>
+<script src="script/library/html5.js"></script>
 <![endif]-->
 
 <script>
@@ -18,7 +18,7 @@
 function handleStorageEvent(e) {
 	var _logStr = 'key:' + e.key + '\noldValue:' + e.oldValue + '\nnewValue:' + e.newValue;
 	$('#log').html(_logStr)
-	console.log(_logStr); 
+	console.log(_logStr);
 } 
 // 添加存储事件监听
 window.addEventListener('storage', handleStorageEvent, false);

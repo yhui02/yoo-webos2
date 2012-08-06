@@ -24,19 +24,29 @@ requirejs.onError = function(err) {
 require.config({
 	baseUrl: './script/',
 	paths: {
-		'order'            : 'library/requirejs/order',
-		'text'             : 'library/requirejs/text',
-		'dojo'             : 'http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo',
-		//'jquery'           : 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
-		'jquery'           : 'library/jquery-1.7.2.min',
-		'jquery-history'   : 'library/jquery.history',
-		'jquery-hashchange'   : 'library/jquery.hashchange',
+		'order' : 'library/requirejs/order',
+		'text' : 'library/requirejs/text',
+		'dojo' : 'http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo',
+		//'jquery' : 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
+		'jquery' : 'library/jquery-1.7.2.min',
+		'jquery-history' : 'library/jquery.history',
+		'underscore' : 'library/underscore-min',
+		'backbone' : 'library/backbone-min',
 		'bootstrap-button' : 'library/bootstrap/bootstrap-button',
-		'bootstrap-tooltip': 'library/bootstrap/bootstrap-tooltip'
+		'bootstrap-tooltip' : 'library/bootstrap/bootstrap-tooltip'
+	},
+	shim: {
+		'underscore' : {
+			exports: '_'
+		},
+		'backbone' : {
+			deps: ['underscore', 'jquery'],
+			exports: 'Backbone'
+		}
 	},
 	packages: ['tools'],
 	waitSeconds : 20,
-	urlArgs: 'version=1.0.2'
+	urlArgs: 'v=1.0.2'
 });
 
 define(function(require, exports, module) {
@@ -45,39 +55,41 @@ define(function(require, exports, module) {
 	 */
 	window.T = require('tools') || {};
 
+	// 页面工具类
 	var modelPage = require('model/model-page');
 	// 页面初始化操作
 	T.applyObj(modelPage.init);
 	// 扩展 modelPage 工具类到 T 上
 	T = $.extend(T, modelPage);
 	
-	// history support
-	/*
-	var modelHistory = require('model/model-history');
-	modelHistory.init($('body'));
-	T = $.extend(T, modelHistory);
-	*/
 	
-	// --
-	window.E = {};
-	E.admin = function() {
-		console.log('admin');
-	};
-	E.user = function() {
-		console.log('user');
-	};
-	E.widget = function() {
-		console.log('widget');
-	};
-	require(['model/model-hashchange'], function(modelHashchange) {
-		//
+	require(['backbone'], function() {
+		var B =  Backbone;
+		var AppRouter = B.Router.extend({
+			routes : {
+				'dialog/:id' : 'dialog',
+				'dialog/:id/:url' : 'dialog',
+				'dialog/:id/:url/:type' : 'dialog',
+				'dialog/:id/:url/:type/:refresh' : 'dialog'
+			},
+			
+			dialog : function(id, url, type, refresh) {
+				try{
+					T.dialogOpen(id, url, type, refresh);
+				} catch(e) {
+					setTimeout(function() {
+						T.dialogOpen(id, url, type, refresh);
+					}, 100);
+				}
+			}
+		});
+		var app_router = new AppRouter;
+		B.history.start();
 	});
 	
 	/*
 	 * desktop 初始化
 	 */
-	require(['order!jquery', 'order!bootstrap-button']);
-	
 	var desktop = require('model/model-desktop');
 	var iconJson = require('menu.json');
 	
@@ -87,10 +99,7 @@ define(function(require, exports, module) {
 	else
 		desktop.desktopDialog(iconJson);
 	T = $.extend(T, desktop);
-	// 通过hash值改变调用窗口打开
-	E.dialog = function(path) {
-		T.dialogOpen(path[1], path[2], path[3], path[4]);
-	};
+	
 	
 	if (_hash == '') {
 		$('.pageType a:first').addClass('active');
