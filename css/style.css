@@ -53,7 +53,7 @@ iframe {
 	padding: 10px 0 0 69px;
 	min-width: 911px;
 	min-height: 48px;
-	background: #6C2C2F url(../img/icon_alert_01.png) 22px 50% no-repeat;
+	background: #094AB2 url(../img/icon_alert_01.png) 22px 50% no-repeat;
 	/*background-color: #1673BA;*/
 	color: white;
 	font-size: 13px;
@@ -144,4 +144,21 @@ iframe {
 	position: absolute;
 	right: 1.8em;
 	top: .56em;
+}
+
+
+
+::-webkit-scrollbar{
+	background-color:#efefef;
+	width:16px;
+	height:16px;
+}
+::-webkit-scrollbar-thumb{
+	background-color:#dbd9d9;
+}
+::-webkit-scrollbar-thumb:hover{
+	background-color:#ddd;
+}
+::-webkit-scrollbar-thumb:ACTIVE{
+	background-color:#999;
 }
